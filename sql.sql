@@ -128,3 +128,9 @@ ALTER TABLE `user`
 ADD COLUMN `cedula` VARCHAR(10),
 ADD COLUMN `nombre` VARCHAR(200),
 ADD COLUMN `apellido` VARCHAR(200);
+
+INSERT INTO `role` (`id`, `name`, `status`, `fecha_creacion`, `creado_por`) 
+VALUES (1,'administrador', 'A', '2024-06-26', 1);
+
+INSERT INTO `role` (`id`, `name`, `status`, `fecha_creacion`, `creado_por`) 
+VALUES (2,'operador', 'A', '2024-06-26', 1);
