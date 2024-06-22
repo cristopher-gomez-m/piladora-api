@@ -1,5 +1,5 @@
 export enum Status {
-    A = 'A',
-    E = 'E',
-    I = 'I'
+  A = 'A',
+  E = 'E',
+  I = 'I',
 }
