@@ -6,6 +6,7 @@ import { CreateUserDto } from './entity/DTO/create-user.dto';
 import { Role } from 'src/role/entity/role.entity';
 import { Status } from 'src/enums/status';
 import { UserDTO } from './entity/DTO/user.dto';
+import { paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 
 @Injectable()
 export class UserService {
@@ -16,15 +17,14 @@ export class UserService {
     private roleRepository: Repository<Role>,
   ) {}
 
-  async findAll(): Promise<UserDTO[]> {
-    const users = await this.userRepository.find(
-      {
-        select: ["username","nombre","role"],
-        relations: ["role"]
-      }  
-    );
-    const usersDTO = users.map(user => new UserDTO(user.username,user.nombre ,user.role, ));
-    return usersDTO;
+  async findAll(query:PaginateQuery): Promise<Paginated<User>> {
+    const paginatedResults = await paginate(query, this.userRepository, {
+      relations: ['role'],
+      sortableColumns:['id'], 
+      select:['id','username','nombre','role','status','fecha_creacion','creado_por']
+    });
+  
+    return  paginatedResults
   }
 
   async store(createUserDto: CreateUserDto): Promise<User> {
