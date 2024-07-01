@@ -1,4 +1,4 @@
-import { Injectable, Inject, NotFoundException } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { User } from './entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -21,7 +21,8 @@ export class UserService {
     const paginatedResults = await paginate(query, this.userRepository, {
       relations: ['role'],
       sortableColumns:['id'], 
-      select:['id','username','nombre','role','status','fecha_creacion','creado_por']
+      select:['id','username','nombre','role','status','fecha_creacion','creado_por'],
+      where: { status: Status.A },
     });
   
     return  paginatedResults
@@ -41,5 +42,23 @@ export class UserService {
     user.fecha_creacion = new Date();
     user.creado_por = createUserDto.user_id;
     return await this.userRepository.save(user);
+  }
+
+  async delete(id:number){
+    try {
+      const user = await this.userRepository.findOneBy({id});
+      if (!user) {
+        throw new NotFoundException(`Usuario no encontrado`);
+      }
+      user.status= Status.I;
+       await this.userRepository.save(user);
+       return {message:'Usuario eliminado correctamente'};
+    } catch (error) {
+      if(error.code === 500){
+        throw new InternalServerErrorException('Error al eliminar el usuario');
+      }
+      throw error;
+      
+    }
   }
 }
