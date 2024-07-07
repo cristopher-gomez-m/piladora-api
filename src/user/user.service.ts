@@ -1,5 +1,5 @@
 import { Injectable, Inject, NotFoundException, InternalServerErrorException } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Brackets, Repository } from 'typeorm';
 import { User } from './entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from './entity/DTO/create-user.dto';
@@ -17,17 +17,54 @@ export class UserService {
     private roleRepository: Repository<Role>,
   ) {}
 
+  /*
   async findAll(query:PaginateQuery): Promise<Paginated<User>> {
+    const {search} = query;
+    let where ={status: Status.A};
+    if(search){
+      where = {...where,}
+    }
     const paginatedResults = await paginate(query, this.userRepository, {
       relations: ['role'],
       sortableColumns:['id'], 
       select:['id','username','nombre','role','status','fecha_creacion','creado_por'],
       where: { status: Status.A },
+      
     });
   
     return  paginatedResults
   }
+*/
 
+async findAll(query: PaginateQuery): Promise<Paginated<User>> {
+  const { search } = query;
+  const qb = this.userRepository.createQueryBuilder('user');
+
+  // Incluye relaciones
+  qb.leftJoinAndSelect('user.role', 'role');
+
+  // Condición base
+  qb.where('user.status = :status', { status: Status.A });
+
+  // Lógica de búsqueda compleja
+  if (search) {
+    qb.andWhere(
+      new Brackets(qb => {
+        qb.where('user.username LIKE :search', { search: `%${search}%` })
+          .orWhere('user.nombre LIKE :search', { search: `%${search}%` })
+          // Puedes añadir más condiciones OR según sea necesario
+      })
+    );
+  }
+
+  // Aplica paginación
+  const paginatedResults = await paginate<User>(query, qb, {
+    sortableColumns: ['id'],
+    select: ['id', 'username', 'nombre', 'status', 'fecha_creacion', 'creado_por'],
+  });
+
+  return paginatedResults;
+}
   async store(createUserDto: CreateUserDto): Promise<User> {
     const role = await this.roleRepository.findOne({ where: { name: createUserDto.role } });
     if (!role) {
