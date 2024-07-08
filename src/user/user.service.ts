@@ -1,4 +1,9 @@
-import { Injectable, Inject, NotFoundException, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  NotFoundException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { Brackets, Repository } from 'typeorm';
 import { User } from './entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -36,66 +41,91 @@ export class UserService {
   }
 */
 
-async findAll(query: PaginateQuery): Promise<Paginated<User>> {
-  const { search } = query;
-  const qb = this.userRepository.createQueryBuilder('user');
+  async findByUsername(username: string, password: string): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: { username, password, status: Status.A },
+      relations: ['role'],
+    });
 
-  // Incluye relaciones
-  qb.leftJoinAndSelect('user.role', 'role');
+    if (!user) {
+      throw new NotFoundException(`Usuario ${username} no encontrado`);
+    }
 
-  // Condición base
-  qb.where('user.status = :status', { status: Status.A });
-
-  // Lógica de búsqueda compleja
-  if (search) {
-    qb.andWhere(
-      new Brackets(qb => {
-        qb.where('user.username LIKE :search', { search: `%${search}%` })
-          .orWhere('user.nombre LIKE :search', { search: `%${search}%` })
-          // Puedes añadir más condiciones OR según sea necesario
-      })
-    );
+    return user;
   }
 
-  // Aplica paginación
-  const paginatedResults = await paginate<User>(query, qb, {
-    sortableColumns: ['id'],
-    select: ['id', 'username', 'nombre', 'status', 'fecha_creacion', 'creado_por'],
-  });
+  
+  async findAll(query: PaginateQuery): Promise<Paginated<User>> {
+    const { search } = query;
+    const qb = this.userRepository.createQueryBuilder('user');
 
-  return paginatedResults;
-}
+    // Incluye relaciones
+    qb.leftJoinAndSelect('user.role', 'role');
+
+    // Condición base
+    qb.where('user.status = :status', { status: Status.A });
+
+    // Lógica de búsqueda compleja
+    if (search) {
+      qb.andWhere(
+        new Brackets((qb) => {
+          qb.where('user.username LIKE :search', {
+            search: `%${search}%`,
+          }).orWhere('user.nombre LIKE :search', { search: `%${search}%` });
+          // Puedes añadir más condiciones OR según sea necesario
+        }),
+      );
+    }
+
+    // Aplica paginación
+    const paginatedResults = await paginate<User>(query, qb, {
+      sortableColumns: ['id'],
+      select: [
+        'id',
+        'username',
+        'nombre',
+        'status',
+        'fecha_creacion',
+        'creado_por',
+      ],
+    });
+
+    return paginatedResults;
+  }
   async store(createUserDto: CreateUserDto): Promise<User> {
-    const role = await this.roleRepository.findOne({ where: { name: createUserDto.role } });
+    const role = await this.roleRepository.findOne({
+      where: { name: createUserDto.role },
+    });
     if (!role) {
-      throw new NotFoundException(`Role with ID ${createUserDto.role} not found`);
+      throw new NotFoundException(
+        `Role with ID ${createUserDto.role} not found`,
+      );
     }
 
     const user = this.userRepository.create({
       ...createUserDto,
-      role,  // asigna el objeto Role en lugar del ID
+      role, // asigna el objeto Role en lugar del ID
     });
-    user.status= Status.A;
+    user.status = Status.A;
     user.fecha_creacion = new Date();
     user.creado_por = createUserDto.user_id;
     return await this.userRepository.save(user);
   }
 
-  async delete(id:number){
+  async delete(id: number) {
     try {
-      const user = await this.userRepository.findOneBy({id});
+      const user = await this.userRepository.findOneBy({ id });
       if (!user) {
         throw new NotFoundException(`Usuario no encontrado`);
       }
-      user.status= Status.I;
-       await this.userRepository.save(user);
-       return {message:'Usuario eliminado correctamente'};
+      user.status = Status.I;
+      await this.userRepository.save(user);
+      return { message: 'Usuario eliminado correctamente' };
     } catch (error) {
-      if(error.code === 500){
+      if (error.code === 500) {
         throw new InternalServerErrorException('Error al eliminar el usuario');
       }
       throw error;
-      
     }
   }
 }
