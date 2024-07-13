@@ -134,3 +134,66 @@ VALUES (1,'administrador', 'A', '2024-06-26', 1);
 
 INSERT INTO `role` (`id`, `name`, `status`, `fecha_creacion`, `creado_por`) 
 VALUES (2,'operador', 'A', '2024-06-26', 1);
+
+--6
+INSERT INTO marca (name, id_proveedor, status, fecha_creacion, creado_por) VALUES
+('La Favorita', 1, 'A', '2024-07-13', 1),
+('Tonicorp', 2, 'A', '2024-07-13', 1),
+('Industrias Lácteas Toni', 3, 'A', '2024-07-13', 1),
+('La Universal', 4, 'A', '2024-07-13', 1);
+
+use piladora;
+
+INSERT INTO `piladora`.`producto`
+(`name`, `id_marca`, `peso`, `precio`, `categoria`, `status`, `fecha_creacion`, `creado_por`)
+VALUES
+('LFA-ARR-B', 1, 1000, 3.50, 'blanco', 'A', '2024-07-13', 1),
+('LFA-ARR-I', 1, 1000, 3.50, 'integral', 'A', '2024-07-13', 1),
+('LFA-ARR-B', 1, 1500, 5.00, 'blanco', 'A', '2024-07-13', 1),
+('LFA-ARR-I', 1, 1500, 5.00, 'integral', 'A', '2024-07-13', 1),
+('LFA-ARR-B', 1, 2000, 6.50, 'blanco', 'A', '2024-07-13', 1),
+('LFA-ARR-I', 1, 2000, 6.50, 'integral', 'A', '2024-07-13', 1),
+('LFA-ARR-B', 1, 2500, 8.00, 'blanco', 'A', '2024-07-13', 1),
+('LFA-ARR-I', 1, 2500, 8.00, 'integral', 'A', '2024-07-13', 1),
+('LFA-ARR-B', 1, 3000, 9.50, 'blanco', 'A', '2024-07-13', 1),
+('LFA-ARR-I', 1, 3000, 9.50, 'integral', 'A', '2024-07-13', 1),
+('TNC-ARR-B', 2, 3500, 11.00, 'blanco', 'A', '2024-07-13', 1),
+('TNC-ARR-I', 2, 3500, 11.00, 'integral', 'A', '2024-07-13', 1),
+('TNC-ARR-B', 2, 4000, 12.50, 'blanco', 'A', '2024-07-13', 1),
+('TNC-ARR-I', 2, 4000, 12.50, 'integral', 'A', '2024-07-13', 1),
+('TNC-ARR-B', 2, 4500, 14.00, 'blanco', 'A', '2024-07-13', 1),
+('TNC-ARR-I', 2, 4500, 14.00, 'integral', 'A', '2024-07-13', 1),
+('TNC-ARR-B', 2, 5000, 15.50, 'blanco', 'A', '2024-07-13', 1),
+('TNC-ARR-I', 2, 5000, 15.50, 'integral', 'A', '2024-07-13', 1),
+('TNC-ARR-B', 2, 5500, 17.00, 'blanco', 'A', '2024-07-13', 1),
+('TNC-ARR-I', 2, 5500, 17.00, 'integral', 'A', '2024-07-13', 1),
+('TNC-ARR-B', 2, 6000, 18.50, 'blanco', 'A', '2024-07-13', 1),
+('TNC-ARR-I', 2, 6000, 18.50, 'integral', 'A', '2024-07-13', 1),
+('UNI-ARR-B', 4, 6500, 20.00, 'blanco', 'A', '2024-07-13', 1),
+('UNI-ARR-I', 4, 6500, 20.00, 'integral', 'A', '2024-07-13', 1),
+('UNI-ARR-B', 4, 7000, 21.50, 'blanco', 'A', '2024-07-13', 1),
+('UNI-ARR-I', 4, 7000, 21.50, 'integral', 'A', '2024-07-13', 1),
+('UNI-ARR-B', 4, 7500, 23.00, 'blanco', 'A', '2024-07-13', 1),
+('UNI-ARR-I', 4, 7500, 23.00, 'integral', 'A', '2024-07-13', 1),
+('UNI-ARR-B', 4, 8000, 24.50, 'blanco', 'A', '2024-07-13', 1),
+('UNI-ARR-I', 4, 8000, 24.50, 'integral', 'A', '2024-07-13', 1),
+('UNI-ARR-B', 4, 8500, 26.00, 'blanco', 'A', '2024-07-13', 1),
+('UNI-ARR-I', 4, 8500, 26.00, 'integral', 'A', '2024-07-13', 1),
+('ILT-ARR-B', 3, 5000, 15.50, 'blanco', 'A', '2024-07-13', 1),
+('ILT-ARR-I', 3, 5000, 15.50, 'integral', 'A', '2024-07-13', 1),
+('ILT-ARR-B', 3, 5500, 17.00, 'blanco', 'A', '2024-07-13', 1),
+('ILT-ARR-I', 3, 5500, 17.00, 'integral', 'A', '2024-07-13', 1),
+('ILT-ARR-B', 3, 6000, 18.50, 'blanco', 'A', '2024-07-13', 1),
+('ILT-ARR-I', 3, 6000, 18.50, 'integral', 'A', '2024-07-13', 1),
+('ILT-ARR-B', 3, 6500, 20.00, 'blanco', 'A', '2024-07-13', 1),
+('ILT-ARR-I', 3, 6500, 20.00, 'integral', 'A', '2024-07-13', 1),
+('ILT-ARR-B', 3, 7000, 21.50, 'blanco', 'A', '2024-07-13', 1),
+('ILT-ARR-I', 3, 7000, 21.50, 'integral', 'A', '2024-07-13', 1),
+('ILT-ARR-B', 3, 7500, 23.00, 'blanco', 'A', '2024-07-13', 1),
+('ILT-ARR-I', 3, 7500, 23.00, 'integral', 'A', '2024-07-13', 1),
+('ILT-ARR-B', 3, 8000, 24.50, 'blanco', 'A', '2024-07-13', 1),
+('ILT-ARR-I', 3, 8000, 24.50, 'integral', 'A', '2024-07-13', 1),
+('ILT-ARR-B', 3, 8500, 26.00, 'blanco', 'A', '2024-07-13', 1),
+('ILT-ARR-I', 3, 8500, 26.00, 'integral', 'A', '2024-07-13', 1);
+
+
