@@ -1,5 +1,10 @@
-import { Injectable, Inject, NotFoundException, InternalServerErrorException } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import {
+  Injectable,
+  Inject,
+  NotFoundException,
+  InternalServerErrorException,
+} from '@nestjs/common';
+import { Brackets, Repository } from 'typeorm';
 import { User } from './entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from './entity/DTO/create-user.dto';
@@ -8,6 +13,7 @@ import { Status } from 'src/enums/status';
 import { UserDTO } from './entity/DTO/user.dto';
 import { paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 import { UpdateUserDto } from './entity/DTO/update.user.dto';
+
 
 @Injectable()
 export class UserService {
@@ -18,47 +24,104 @@ export class UserService {
     private roleRepository: Repository<Role>,
   ) { }
 
-  async findAll(query: PaginateQuery): Promise<Paginated<User>> {
-    const paginatedResults = await paginate(query, this.userRepository, {
+  // async findAll(query:PaginateQuery): Promise<Paginated<User>> {
+  //   const paginatedResults = await paginate(query, this.userRepository, {
+  //     relations: ['role'],
+  //     sortableColumns: ['id'],
+  //     select: [
+  //       'id',
+  //       'username',
+  //       'nombre',
+  //       'cedula',
+  //       'password',
+  //       'apellido',
+  //       'status',
+  //       'fecha_creacion',
+  //       'creado_por',
+  //       'role'  // Incluir el rol en la selección
+  //     ],
+  //     where: { status: Status.A },
+      
+  //   });
+
+  //   // Para cada usuario, selecciona los campos necesarios del rol
+  //   paginatedResults.data.forEach(user => {
+  //     if (user.role) {
+  //       user.role = {
+  //         id: user.role.id,
+  //         name: user.role.name
+  //       } as Role;
+  //     }
+  //   });
+
+  //   return paginatedResults;
+  // }
+
+
+  async findByUsername(username: string, password: string): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: { username, password, status: Status.A },
       relations: ['role'],
+    });
+
+    if (!user) {
+      throw new NotFoundException(`Usuario ${username} no encontrado`);
+    }
+
+    return user;
+  }
+
+  
+  async findAll(query: PaginateQuery): Promise<Paginated<User>> {
+    const { search } = query;
+    const qb = this.userRepository.createQueryBuilder('user');
+
+    // Incluye relaciones
+    qb.leftJoinAndSelect('user.role', 'role');
+
+    // Condición base
+    qb.where('user.status = :status', { status: Status.A });
+
+    // Lógica de búsqueda compleja
+    if (search) {
+      qb.andWhere(
+        new Brackets((qb) => {
+          qb.where('user.username LIKE :search', {
+            search: `%${search}%`,
+          }).orWhere('user.nombre LIKE :search', { search: `%${search}%` });
+          // Puedes añadir más condiciones OR según sea necesario
+        }),
+      );
+    }
+
+    // Aplica paginación
+    const paginatedResults = await paginate<User>(query, qb, {
       sortableColumns: ['id'],
       select: [
         'id',
         'username',
         'nombre',
-        'cedula',
-        'password',
-        'apellido',
         'status',
         'fecha_creacion',
         'creado_por',
-        'role'  // Incluir el rol en la selección
       ],
-      where: { status: Status.A },
-    });
-
-    // Para cada usuario, selecciona los campos necesarios del rol
-    paginatedResults.data.forEach(user => {
-      if (user.role) {
-        user.role = {
-          id: user.role.id,
-          name: user.role.name
-        } as Role;
-      }
     });
 
     return paginatedResults;
   }
-
   async store(createUserDto: CreateUserDto): Promise<User> {
-    const role = await this.roleRepository.findOne({ where: { name: createUserDto.role } });
+    const role = await this.roleRepository.findOne({
+      where: { name: createUserDto.role },
+    });
     if (!role) {
-      throw new NotFoundException(`Role with ID ${createUserDto.role} not found`);
+      throw new NotFoundException(
+        `Role with ID ${createUserDto.role} not found`,
+      );
     }
 
     const user = this.userRepository.create({
       ...createUserDto,
-      role,  // asigna el objeto Role en lugar del ID
+      role, // asigna el objeto Role en lugar del ID
     });
     user.status = Status.A;
     user.fecha_creacion = new Date();
@@ -80,7 +143,7 @@ export class UserService {
         throw new InternalServerErrorException('Error al eliminar el usuario');
       }
       throw error;
-
+      
     }
   }
   async update(userId: number, updateUserDto: UpdateUserDto): Promise<User> {

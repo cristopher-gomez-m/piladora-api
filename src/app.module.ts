@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/entity/user.entity';
+import { AuthModule } from './auth/auth.module';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 
@@ -20,6 +21,7 @@ dotenv.config();
       entities: [path.join(__dirname, '**', 'entity', '*.entity.{ts,js}')],
       synchronize: false,
     }),
+    AuthModule,
     UserModule,
   ],
   controllers: [AppController],
