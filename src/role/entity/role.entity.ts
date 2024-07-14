@@ -3,21 +3,21 @@ import { Status } from 'src/enums/status'; // Asegúrate de importar el enum Sta
 
 @Entity({ name: 'role' }) // Opcionalmente, puedes especificar el nombre de la tabla si es diferente
 export class Role {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @Column({ type: 'varchar', length: 255 })
-  name: string;
+    @Column({ type: 'varchar', length: 255 })
+    name: string;
 
-  @Column({
-    type: 'enum',
-    enum: Status,
-  })
-  status: Status;
+    @Column({
+        type: 'enum',
+        enum: Status,
+    })
+    status: Status;
 
-  @Column({ type: 'date' })
-  fecha_creacion: Date;
+    @Column({ type: 'date' })
+    fecha_creacion: Date;
 
-  @Column({ type: 'int' })
-  creado_por: number;
+    @Column({ type: 'int' })
+    creado_por: number;
 }
