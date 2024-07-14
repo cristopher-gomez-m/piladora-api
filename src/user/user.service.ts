@@ -10,7 +10,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from './entity/DTO/create-user.dto';
 import { Role } from 'src/role/entity/role.entity';
 import { Status } from 'src/enums/status';
-import { UserDTO } from './entity/DTO/user.dto';
 import { paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 import { UpdateUserDto } from './entity/DTO/update.user.dto';
 

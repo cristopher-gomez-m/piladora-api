@@ -5,17 +5,14 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/entity/user.entity';
 
-import { ProductoController } from './producto/producto.controller';
 import { ProductoModule } from './producto/producto.module';
-import { ProveedorService } from './proveedor/proveedor.service';
-import { ProveedorController } from './proveedor/proveedor.controller';
+
 import { ProveedorModule } from './proveedor/proveedor.module';
-import { MarcaController } from './marca/marca.controller';
-import { MarcaService } from './marca/marca.service';
 import { MarcaModule } from './marca/marca.module';
 
 import * as dotenv from 'dotenv';
 import * as path from 'path';
+import { AuthModule } from './auth/auth.module';
 
 dotenv.config();
 @Module({
