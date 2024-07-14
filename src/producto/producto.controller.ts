@@ -15,5 +15,5 @@ export class ProductoController {
     @Post()
     async store(@Body() createProductDTO: CreateProductoDTO): Promise<any> {
         return this.productoService.store(createProductDTO);
-      }
+    }
 }
