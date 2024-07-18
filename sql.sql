@@ -60,6 +60,12 @@ CREATE TABLE `proveedor` (
   `status` ENUM('A', 'E', 'I')
 );
 
+alter table marca
+add constraint fk_marca
+FOREIGN key (id_proveedor)
+references proveedor(id);	
+
+
 CREATE TABLE `ingresosSalidasStock` (
   `id` integer PRIMARY KEY,
   `id_producto` integer,
@@ -196,4 +202,11 @@ VALUES
 ('ILT-ARR-B', 3, 8500, 26.00, 'blanco', 'A', '2024-07-13', 1),
 ('ILT-ARR-I', 3, 8500, 26.00, 'integral', 'A', '2024-07-13', 1);
 
+
+-- FORENKEY PROVEEDOR
+use piladora;
+alter table marca
+add constraint fk_marca
+FOREIGN key (id_proveedor)
+references proveedor(id);
 
