@@ -27,9 +27,10 @@ export class AuthService {
     if (!user) {
       throw new NotFoundException();
     }
-    const role = {id: user.role.id, nombre: user.role.name};
-    const payload = { username: user.username, id: user.id, role: role};
+    const role = { id: user.role.id, nombre: user.role.name };
+    const payload = { id: user.id, role: role };
     return {
+      user: user,
       access_token: this.jwtService.sign(payload),
     };
   }

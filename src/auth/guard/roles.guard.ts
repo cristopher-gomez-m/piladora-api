@@ -14,8 +14,8 @@ export class RolesGuard implements CanActivate {
     const token = this.extractTokenFromHeader(request.headers.authorization);
     
     try {
+      //this.jwtService.verify(token);
       const user = this.jwtService.verify(token);
-      
       // Verificar si el usuario tiene el rol adecuado (por ejemplo, rol de administrador)
       if (user.role.id !== 1) {
         throw new UnauthorizedException('No tienes permiso para acceder a este recurso');

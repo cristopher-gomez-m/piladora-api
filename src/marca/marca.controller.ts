@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { MarcaService } from './marca.service';
-import { CreateMarcaDTO } from './entity/dto/create-marca.dto';
+import { CreateMarcaDTO } from './entity/DTO/create-marca.dto';
+//import { CreateMarcaDTO } from './entity/dto/create-marca.dto';
 
 @Controller('marca')
 export class MarcaController {

@@ -12,12 +12,17 @@ import { Role } from 'src/role/entity/role.entity';
 
 dotenv.config();
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Role]),forwardRef(() => UserModule),PassportModule,JwtModule.register({
-    secret: process.env.JWT_SECRET,
-    signOptions: { expiresIn: '1h' },
-  })],
-  providers: [AuthService,JwtStrategy],
+  imports: [
+    TypeOrmModule.forFeature([User, Role]),
+    forwardRef(() => UserModule),
+    PassportModule,
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '1h' },
+    }),
+  ],
+  providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
-  exports: [AuthService,JwtModule],
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule {}
