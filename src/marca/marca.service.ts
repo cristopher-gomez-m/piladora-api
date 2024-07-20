@@ -20,7 +20,14 @@ export class MarcaService {
     ) { }
 
     async findAll(): Promise<Marca[]> {
-        return this.marcaRepository.find();
+        return this.marcaRepository.find({ relations: ['id_proveedor'] });
+    }
+
+    async findByProveedor(proveedorId: number): Promise<Marca[]> {
+        return this.marcaRepository.find({ 
+            where: { id_proveedor: { id: proveedorId } }, 
+            relations: ['id_proveedor']
+        });
     }
 
     async store(createMarcaDTO: CreateMarcaDTO): Promise<ApiResponse> {

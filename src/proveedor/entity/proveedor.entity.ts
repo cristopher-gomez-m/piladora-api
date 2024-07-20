@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Marca } from 'src/marca/entity/marca.entity';
 import { Status } from 'src/enums/status';
 
 @Entity()
@@ -11,10 +12,10 @@ export class Proveedor {
 
     @Column({ type: 'varchar', length: 255 })
     identificacion: string;
-    
+
     @Column({ type: 'date' })
     fecha_creacion: Date;
-    
+
     @Column({ type: 'int' })
     creado_por: number;
 
@@ -24,5 +25,6 @@ export class Proveedor {
     })
     status: Status;
 
-
+    @OneToMany(() => Marca, marca => marca.id_proveedor)
+    marcas: Marca[];
 }

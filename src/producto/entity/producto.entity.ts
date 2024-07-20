@@ -1,25 +1,29 @@
-import { Categoria } from "src/enums/categoria";
-import { Status } from "src/enums/status";
-import { Marca } from "src/marca/entity/marca.entity";
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Marca } from 'src/marca/entity/marca.entity';
+//import { IngresosSalidasStock } from 'src/IngresosSalidasStock/entity/entrada-salida-stock-entity';
+import { Status } from 'src/enums/status';
+import { Categoria } from 'src/enums/categoria';
+import { IngresosSalidasStock } from 'src/IngresosSalidasStock/entity/IngresosSalidasStock.entity';
+
+
 
 @Entity()
 export class Producto {
     @PrimaryGeneratedColumn()
-    id: number;    
+    id: number;
 
     @Column({ type: 'varchar', length: 255 })
     name: string;
 
-    @Column( {type: 'float'} )
-    peso: number;
-
-    @Column( {type: 'float'} )
-    precio: number;
-
-    @OneToOne(() => Marca )
+    @ManyToOne(() => Marca, marca => marca.productos)
     @JoinColumn({ name: 'id_marca' })
     id_marca: Marca;
+
+    @Column({ type: 'float' })
+    peso: number;
+
+    @Column({ type: 'float' })
+    precio: number;
 
     @Column({
         type: 'enum',
@@ -35,7 +39,10 @@ export class Producto {
 
     @Column({ type: 'date' })
     fecha_creacion: Date;
-    
+
     @Column({ type: 'int' })
     creado_por: number;
+
+    @OneToMany(() => IngresosSalidasStock, ingresosSalidasStock => ingresosSalidasStock.producto)
+    ingresosSalidasStock: IngresosSalidasStock[];
 }
