@@ -8,6 +8,7 @@ import { MarcaModule } from './marca/marca.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import * as dotenv from 'dotenv';
+import * as path from 'path';
 import { ProveedorModule } from './proveedor/proveedor.module';
 
 dotenv.config();
@@ -21,8 +22,8 @@ dotenv.config();
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true,
+      entities: [path.join(__dirname, '**', 'entity', '*.entity.{ts,js}')],
+      synchronize:false,
       //dropSchema: true, // Esto eliminará todas las tablas al iniciar la aplicación
     }),
     ProductoModule,

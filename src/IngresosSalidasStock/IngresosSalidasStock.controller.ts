@@ -1,16 +1,16 @@
 import { Controller, Get } from '@nestjs/common';
-import { IngresosSalidasStock } from './entity/entrada-salida-stock-entity';
+import { IngresosSalidasStock } from './entity/IngresosSalidasStock.entity';
 import { IngresosSalidasStockService } from './IngresosSalidasStock.service';
 import { get } from 'http';
 
 
-@Controller('IngresosSalidasStock')
+@Controller('ingresosSalidasStock')
 export class IngresosSalidasStockController {
-    constructor(private readonly IngresosSalidasStockService: IngresosSalidasStockService) {}
+    constructor(private readonly   ingresosSalidasStockService: IngresosSalidasStockService) {}
 
     @Get()
     async getIngresosSalidasStock() {
-        const products = await this.IngresosSalidasStockService.findAll();
+        const products = await this.ingresosSalidasStockService.findAll();
         return products
     }
     

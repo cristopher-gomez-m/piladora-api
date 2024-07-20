@@ -7,7 +7,7 @@ import { User } from 'src/user/entity/user.entity';
 import { CreateProductoDTO } from './entity/DTO/create-producto.dto';
 import { Status } from 'src/enums/status';
 import { Categoria } from 'src/enums/categoria';
-import { IngresosSalidasStock } from 'src/IngresosSalidasStock/entity/entrada-salida-stock-entity';
+
 import { CreateProductoStockDTO } from 'src/IngresosSalidasStock/entity/DTO/CreateProductoStock.dto';
 @Injectable()
 export class ProductoService {

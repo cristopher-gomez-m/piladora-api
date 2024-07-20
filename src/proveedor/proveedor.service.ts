@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 import { Proveedor } from './entity/proveedor.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Status } from 'src/enums/status';
-import { ProveedorDTO } from './entity/dto/create-proveedor.dto';
+import { ProveedorDTO } from './entity/DTO/create-proveedor.dto';
 import { User } from 'src/user/entity/user.entity';
 
 @Injectable()

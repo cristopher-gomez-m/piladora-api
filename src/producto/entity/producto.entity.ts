@@ -1,8 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Marca } from 'src/marca/entity/marca.entity';
-import { IngresosSalidasStock } from 'src/IngresosSalidasStock/entity/entrada-salida-stock-entity';
+//import { IngresosSalidasStock } from 'src/IngresosSalidasStock/entity/entrada-salida-stock-entity';
 import { Status } from 'src/enums/status';
 import { Categoria } from 'src/enums/categoria';
+import { IngresosSalidasStock } from 'src/IngresosSalidasStock/entity/IngresosSalidasStock.entity';
+
+
 
 @Entity()
 export class Producto {
@@ -40,6 +43,6 @@ export class Producto {
     @Column({ type: 'int' })
     creado_por: number;
 
-    // @OneToMany(() => IngresosSalidasStock, ingresosSalidasStock => ingresosSalidasStock.id_producto)
-    // ingresosSalidasStock: IngresosSalidasStock[];
+    @OneToMany(() => IngresosSalidasStock, ingresosSalidasStock => ingresosSalidasStock.producto)
+    ingresosSalidasStock: IngresosSalidasStock[];
 }
