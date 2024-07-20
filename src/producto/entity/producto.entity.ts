@@ -40,6 +40,6 @@ export class Producto {
     @Column({ type: 'int' })
     creado_por: number;
 
-    @OneToMany(() => IngresosSalidasStock, ingresosSalidasStock => ingresosSalidasStock.id_producto)
-    ingresosSalidasStock: IngresosSalidasStock[];
+    // @OneToMany(() => IngresosSalidasStock, ingresosSalidasStock => ingresosSalidasStock.id_producto)
+    // ingresosSalidasStock: IngresosSalidasStock[];
 }
