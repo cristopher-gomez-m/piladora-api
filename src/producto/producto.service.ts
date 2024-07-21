@@ -41,7 +41,7 @@ export class ProductoService {
             error: false,
         };
     }
-    
+
 
     async store(createProductoDTO: CreateProductoDTO): Promise<ApiResponse> {
         try {
@@ -94,56 +94,56 @@ export class ProductoService {
 
     async update(id: number, updateProductoDTO: UpdateProductoDTO): Promise<ApiResponse> {
         try {
-          const producto = await this.productoRepository.findOne({ where: { id: id } });
-    
-          if (!producto) {
+            const producto = await this.productoRepository.findOne({ where: { id: id } });
+
+            if (!producto) {
+                return {
+                    data: null,
+                    message: 'Producto no encontrado',
+                    error: false,
+                };
+            }
+
+            const id_marca = await this.marcaRepository.findOne({ where: { id: updateProductoDTO.id_marca } });
+
+            if (!id_marca) {
+                return {
+                    data: null,
+                    message: 'Marca no encontrada',
+                    error: false,
+                };
+            }
+
+            const user = await this.userRepository.findOne({ where: { id: updateProductoDTO.creado_por } });
+            if (!user) {
+                return {
+                    data: null,
+                    message: 'Usuario no encontrado',
+                    error: false,
+                };
+            }
+
+            producto.name = updateProductoDTO.name || producto.name;
+            producto.peso = updateProductoDTO.peso || producto.peso;
+            producto.precio = updateProductoDTO.precio || producto.precio;
+            producto.id_marca = id_marca;
+            producto.fecha_creacion = new Date();
+            producto.creado_por = updateProductoDTO.creado_por;
+            producto.categoria = Categoria[updateProductoDTO.categoria as keyof typeof Categoria];
+            producto.status = Status[updateProductoDTO.status as keyof typeof Status];
+
+            await this.productoRepository.save(producto);
             return {
-              data: null,
-              message: 'Producto no encontrado',
-              error: false,
+                data: producto,
+                message: 'Producto actualizado exitosamente',
+                error: false,
             };
-          }
-    
-          const id_marca = await this.marcaRepository.findOne({ where: { id: updateProductoDTO.id_marca } });
-    
-          if (!id_marca) {
-            return {
-              data: null,
-              message: 'Marca no encontrada',
-              error: false,
-            };
-          }
-    
-          const user = await this.userRepository.findOne({ where: { id: updateProductoDTO.creado_por } });
-          if (!user) {
-            return {
-              data: null,
-              message: 'Usuario no encontrado',
-              error: false,
-            };
-          }
-    
-          producto.name = updateProductoDTO.name || producto.name;
-          producto.peso = updateProductoDTO.peso || producto.peso;
-          producto.precio = updateProductoDTO.precio || producto.precio;
-          producto.id_marca = id_marca;
-          producto.fecha_creacion = new Date();
-          producto.creado_por = updateProductoDTO.creado_por;
-          producto.categoria = Categoria[updateProductoDTO.categoria as keyof typeof Categoria];
-          producto.status = Status[updateProductoDTO.status as keyof typeof Status];
-    
-          await this.productoRepository.save(producto);
-          return {
-            data: producto,
-            message: 'Producto actualizado exitosamente',
-            error: false,
-          };
         } catch (error) {
-          return {
-            data: null,
-            message: 'Error al actualizar el producto',
-            error: true,
-          };
+            return {
+                data: null,
+                message: 'Error al actualizar el producto',
+                error: true,
+            };
         }
     }
 
@@ -174,7 +174,7 @@ export class ProductoService {
                     'ingreso'
                 ]
             );
-            return { 
+            return {
                 data: null,
                 message: 'Producto y stock agregados correctamente' ,
                 error: false,
