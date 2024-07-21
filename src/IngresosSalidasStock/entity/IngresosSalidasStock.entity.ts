@@ -8,9 +8,9 @@ export class IngresosSalidasStock {
     @PrimaryGeneratedColumn()
     id: number;
 
-     @ManyToOne(() => Producto, producto => producto.ingresosSalidasStock)
-     @JoinColumn({ name: 'id_producto' })
-     producto: Producto;
+    @ManyToOne(() => Producto, producto => producto.ingresosSalidasStock)
+    @JoinColumn({ name: 'id_producto' })
+    producto: Producto;
 
     @Column({ type: 'int' })
     stock: number;

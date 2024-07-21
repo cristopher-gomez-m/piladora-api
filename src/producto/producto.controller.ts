@@ -18,8 +18,8 @@ export class ProductoController {
         return this.productoService.store(createProductDTO);
     }
 
-    // @Post('add')
-    // async addProductAndStock(@Body() createProductoStockDTO: CreateProductoStockDTO): Promise<any> {
-    //     return this.productoService.addNewProductAndStock(createProductoStockDTO);
-    // }
+    @Post('add')
+    async addProductAndStock(@Body() createProductoStockDTO: CreateProductoStockDTO): Promise<any> {
+        return this.productoService.addNewProductAndStock(createProductoStockDTO);
+    }
 }

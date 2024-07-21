@@ -7,8 +7,9 @@ import { User } from 'src/user/entity/user.entity';
 import { CreateProductoDTO } from './entity/DTO/create-producto.dto';
 import { Status } from 'src/enums/status';
 import { Categoria } from 'src/enums/categoria';
-
 import { CreateProductoStockDTO } from 'src/IngresosSalidasStock/entity/DTO/CreateProductoStock.dto';
+import { IngresosSalidasStock } from 'src/IngresosSalidasStock/entity/IngresosSalidasStock.entity';
+
 @Injectable()
 export class ProductoService {
     constructor(
@@ -18,9 +19,9 @@ export class ProductoService {
         private marcaRepository: Repository<Marca>,
         @InjectRepository(User)
         private userRepository: Repository<User>,
-        // @InjectRepository(IngresosSalidasStock)
-        // private ingresosSalidasStockRepository: Repository<IngresosSalidasStock>,
-        // private readonly entityManager: EntityManager,
+        @InjectRepository(IngresosSalidasStock)
+        private ingresosSalidasStockRepository: Repository<IngresosSalidasStock>,
+        private readonly entityManager: EntityManager,
     ) { }
 
     async findAll(): Promise<Producto[]> {
@@ -75,42 +76,47 @@ export class ProductoService {
         }
     }
 
-    // async addNewProductAndStock(createProductoStockDTO: CreateProductoStockDTO): Promise<any> {
-    //     const {
-    //         name,
-    //         proveedorId,
-    //         marcaName,
-    //         peso,
-    //         precio,
-    //         categoria,
-    //         status,
-    //         creadoPor,
-    //         stock,
-    //         tipo
-    //     } = createProductoStockDTO;
+    async addNewProductAndStock(createProductoStockDTO: CreateProductoStockDTO): Promise<ApiResponse> {
+        const {
+            name,
+            proveedorId,
+            marcaName,
+            peso,
+            precio,
+            categoria,
+            stock
+        } = createProductoStockDTO;
 
-    //     try {
-    //         await this.entityManager.query(
-    //             `CALL AddNewProductAndStock(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    //             [
-    //                 name,
-    //                 proveedorId,
-    //                 marcaName,
-    //                 peso,
-    //                 precio,
-    //                 categoria,
-    //                 status,
-    //                 creadoPor,
-    //                 stock,
-    //                 tipo
-    //             ]
-    //         );
-    //         return { message: 'Producto y stock agregados correctamente' };
-    //     } catch (error) {
-    //         console.error('Error al agregar producto y stock:', error);
-    //         throw new Error('Error al agregar producto y stock');
-    //     }
-    // }
+        try {
+            await this.entityManager.query(
+                `CALL AddNewProductAndStock(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [
+                    name,
+                    proveedorId,
+                    marcaName,
+                    peso,
+                    precio,
+                    categoria,
+                    Status.A,
+                    1, //id de usuario que lo creo
+                    stock,
+                    'ingreso'
+                ]
+            );
+            return { 
+                data: null,
+                message: 'Producto y stock agregados correctamente' ,
+                error: false,
+            }
+        } catch (error) {
+            console.error('Error al crear producto:', error);
+            return {
+                data: null,
+                message: 'Error al crear producto',
+                error: true,
+            };
+        }
+    }
 
 
 }
