@@ -78,4 +78,19 @@ export class MarcaService {
     }
 
 
+    async findOne(id: number): Promise<ApiResponse> {
+        const marca = await this.marcaRepository.findOne({ where: { id: id }, relations: ['id_proveedor']});
+        if (!marca) {
+            return {
+                data: null,
+                message: 'No existe marca',
+                error: true,
+            };
+        }
+        return {
+            data: marca,
+            message: 'marca encontrado',
+            error: false,
+        };
+    }
 }

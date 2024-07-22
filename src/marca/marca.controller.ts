@@ -1,4 +1,4 @@
-import { Body, Controller, Get, ParseIntPipe, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { MarcaService } from './marca.service';
 import { CreateMarcaDTO } from './entity/DTO/create-marca.dto';
 //import { CreateMarcaDTO } from './entity/dto/create-marca.dto';
@@ -17,6 +17,11 @@ export class MarcaController {
     async getMarcasByProveedor(@Query('proveedorId', ParseIntPipe) proveedorId: number) {
         const marcas = await this.marcaService.findByProveedor(proveedorId);
         return marcas;
+    }
+
+    @Get(':id')
+    async findOne(@Param('id') id: number) {
+        return this.marcaService.findOne(id);
     }
 
     @Post()

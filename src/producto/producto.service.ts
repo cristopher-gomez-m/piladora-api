@@ -30,7 +30,7 @@ export class ProductoService {
     }
 
     async findOne(id: number): Promise<ApiResponse> {
-        const producto = await this.productoRepository.findOne({ where: { id: id } });
+        const producto = await this.productoRepository.findOne({ where: { id: id }, relations: ['id_marca'] });
         if (!producto) {
             return {
                 data: null,
