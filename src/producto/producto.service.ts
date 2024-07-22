@@ -8,6 +8,9 @@ import { CreateProductoDTO } from './entity/DTO/create-producto.dto';
 import { Status } from 'src/enums/status';
 import { Categoria } from 'src/enums/categoria';
 import { CreateProductoStockDTO } from 'src/IngresosSalidasStock/entity/DTO/CreateProductoStock.dto';
+import { UpdateProductoDTO } from './entity/DTO/update-producto.dto';
+import { IngresosSalidasStock } from 'src/IngresosSalidasStock/entity/IngresosSalidasStock.entity';
+import { CreateProductoingresosalidaDTO } from 'src/IngresosSalidasStock/entity/DTO/createproductoingesostock';
 @Injectable()
 export class ProductoService {
     constructor(
@@ -147,7 +150,7 @@ export class ProductoService {
         }
     }
 
-    async addNewProductAndStock(createProductoStockDTO: CreateProductoStockDTO): Promise<ApiResponse> {
+    async addNewProductAndStock(createProductoStockDTO: CreateProductoingresosalidaDTO): Promise<ApiResponse> {
         const {
             name,
             proveedorId,

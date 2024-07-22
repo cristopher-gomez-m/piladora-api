@@ -3,6 +3,7 @@ import { ProductoService } from './producto.service';
 import { CreateProductoDTO } from './entity/DTO/create-producto.dto';
 import { CreateProductoStockDTO } from 'src/IngresosSalidasStock/entity/DTO/CreateProductoStock.dto';
 import { UpdateProductoDTO } from './entity/DTO/update-producto.dto';
+import { CreateProductoingresosalidaDTO } from 'src/IngresosSalidasStock/entity/DTO/createproductoingesostock';
 
 @Controller('producto')
 export class ProductoController {
@@ -27,10 +28,10 @@ export class ProductoController {
     @Put(':id')
     async update(@Param('id') id: number, @Body() updateProductoDTO: UpdateProductoDTO): Promise<ApiResponse> {
         return this.productoService.update(id, updateProductoDTO);
-  }
+    }
 
     @Post('add')
-    async addProductAndStock(@Body() createProductoStockDTO: CreateProductoStockDTO): Promise<any> {
+    async addProductAndStock(@Body() createProductoStockDTO: CreateProductoingresosalidaDTO): Promise<any> {
         return this.productoService.addNewProductAndStock(createProductoStockDTO);
     }
 }

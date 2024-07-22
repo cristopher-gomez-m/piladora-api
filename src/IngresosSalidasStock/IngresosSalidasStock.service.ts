@@ -20,7 +20,7 @@ export class IngresosSalidasStockService {
     ) { }
 
     async findAll(): Promise<IngresosSalidasStock[]> {
-        return this.ingresosSalidasStockRepository.find();
+        return this.ingresosSalidasStockRepository.find(); //agregar producto join
     }
 
     async store(createIngresosSalidasStock: CreateProductoStockDTO): Promise<ApiResponse> {

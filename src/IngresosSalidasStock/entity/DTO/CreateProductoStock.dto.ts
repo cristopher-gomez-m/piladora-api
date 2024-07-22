@@ -2,35 +2,16 @@ import { IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class
 
 export class CreateProductoStockDTO {
     @IsInt()
-    proveedorId: number;
+    id_producto: number;
 
     @IsString()
-    @IsNotEmpty()
-    marcaName: string;
-
-    @IsNumber()
-    @IsOptional()
-    peso?: number;
-
-    @IsNumber()
-    @IsOptional()
-    precio?: number;
-
-    @IsEnum(['blanco', 'integral'])
-    @IsOptional()
-    categoria?: 'blanco' | 'integral';
-
-    @IsEnum(['A', 'E', 'I'])
-    status: 'A' | 'E' | 'I';
-
-    @IsInt()
-    creadoPor: number;
-
-    @IsInt()
     stock: number;
 
-    @IsEnum(['ingreso', 'salida'])
-    tipo: 'ingreso' | 'salida';
+    @IsString()
+    tipo: string;
+
+    @IsNumber()
+    creado_por: number;
 }
 
 
