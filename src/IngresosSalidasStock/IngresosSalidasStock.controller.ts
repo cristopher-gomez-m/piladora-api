@@ -37,6 +37,5 @@ export class IngresosSalidasStockController {
     async findAlldSalidas(@Param('id_producto') id_producto: number) {
         return this.ingresosSalidasStockService.findAllSalidaByProductoId(id_producto);
     }
-
     
 }

@@ -74,16 +74,16 @@ export class IngresosSalidasStockService {
 
     async findLastIngresoByProductoId(id_producto: number): Promise<ApiResponse> {
         const ingreso = await this.ingresosSalidasStockRepository.findOne({
-          where: {
-            producto: { id: id_producto },
-            tipo: tipostock.ingreso,
-          },
-          order: {
-            fecha_creacion: 'DESC',
-            id: 'DESC'
-          },
+            where: {
+                producto: { id: id_producto },
+                tipo: tipostock.ingreso,
+            },
+            order: {
+                fecha_creacion: 'DESC',
+                id: 'DESC'
+            },
         });
-    
+
         if (!ingreso) {
             return {
                 data: null,
@@ -91,7 +91,7 @@ export class IngresosSalidasStockService {
                 error: true,
             };
         }
-    
+
         return {
             data: ingreso,
             message: `Ultimo ingreso del producto ${id_producto}`,
@@ -101,16 +101,16 @@ export class IngresosSalidasStockService {
 
     async findLastSalidaByProductoId(id_producto: number): Promise<ApiResponse> {
         const ingreso = await this.ingresosSalidasStockRepository.findOne({
-          where: {
-            producto: { id: id_producto },
-            tipo: tipostock.salida,
-          },
-          order: {
-            fecha_creacion: 'DESC',
-            id: 'DESC',
-          },
+            where: {
+                producto: { id: id_producto },
+                tipo: tipostock.salida,
+            },
+            order: {
+                fecha_creacion: 'DESC',
+                id: 'DESC',
+            },
         });
-    
+
         if (!ingreso) {
             return {
                 data: null,
@@ -118,7 +118,7 @@ export class IngresosSalidasStockService {
                 error: true,
             };
         }
-    
+
         return {
             data: ingreso,
             message: `Ultima salida del producto ${id_producto}`,
@@ -128,12 +128,12 @@ export class IngresosSalidasStockService {
 
     async findAllIngresoByProductoId(id_producto: number): Promise<ApiResponse> {
         const ingreso = await this.ingresosSalidasStockRepository.find({
-          where: {
-            producto: { id: id_producto },
-            tipo: tipostock.ingreso,
-          }
+            where: {
+                producto: { id: id_producto },
+                tipo: tipostock.ingreso,
+            }
         });
-    
+
         if (!ingreso) {
             return {
                 data: null,
@@ -141,7 +141,7 @@ export class IngresosSalidasStockService {
                 error: true,
             };
         }
-    
+
         return {
             data: ingreso,
             message: `Registros de ingresos del producto con ${id_producto}`,
@@ -151,12 +151,12 @@ export class IngresosSalidasStockService {
 
     async findAllSalidaByProductoId(id_producto: number): Promise<ApiResponse> {
         const ingreso = await this.ingresosSalidasStockRepository.find({
-          where: {
-            producto: { id: id_producto },
-            tipo: tipostock.salida,
-          }
+            where: {
+                producto: { id: id_producto },
+                tipo: tipostock.salida,
+            }
         });
-    
+
         if (!ingreso) {
             return {
                 data: null,
@@ -164,7 +164,7 @@ export class IngresosSalidasStockService {
                 error: true,
             };
         }
-    
+
         return {
             data: ingreso,
             message: `Registros de salidas del producto con ${id_producto}`,

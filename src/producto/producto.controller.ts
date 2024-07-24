@@ -1,7 +1,6 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ProductoService } from './producto.service';
 import { CreateProductoDTO } from './entity/DTO/create-producto.dto';
-import { CreateProductoStockDTO } from 'src/IngresosSalidasStock/entity/DTO/CreateProductoStock.dto';
 import { UpdateProductoDTO } from './entity/DTO/update-producto.dto';
 import { CreateProductoingresosalidaDTO } from 'src/IngresosSalidasStock/entity/DTO/createproductoingesostock';
 
@@ -33,5 +32,10 @@ export class ProductoController {
     @Post('add')
     async addProductAndStock(@Body() createProductoStockDTO: CreateProductoingresosalidaDTO): Promise<any> {
         return this.productoService.addNewProductAndStock(createProductoStockDTO);
+    }
+
+    @Put('delete/:id')
+    async delete(@Param('id') id: number): Promise<ApiResponse> {
+        return this.productoService.delete(id);
     }
 }

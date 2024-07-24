@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Producto } from './entity/producto.entity';
 import { Marca } from 'src/marca/entity/marca.entity';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager, In, Repository } from 'typeorm';
 import { User } from 'src/user/entity/user.entity';
 import { CreateProductoDTO } from './entity/DTO/create-producto.dto';
 import { Status } from 'src/enums/status';
@@ -26,11 +26,14 @@ export class ProductoService {
     ) { }
 
     async findAll(): Promise<Producto[]> {
-        return this.productoRepository.find({ relations: ['id_marca'] });
+        return this.productoRepository.find({
+            where: { status: In([Status.A, Status.I]) },
+            relations: ['id_marca', 'id_marca.id_proveedor']
+        });
     }
 
     async findOne(id: number): Promise<ApiResponse> {
-        const producto = await this.productoRepository.findOne({ where: { id: id }, relations: ['id_marca'] });
+        const producto = await this.productoRepository.findOne({ where: { id: id }, relations: ['id_marca', 'id_marca.id_proveedor'] });
         if (!producto) {
             return {
                 data: null,
@@ -179,7 +182,7 @@ export class ProductoService {
             );
             return {
                 data: null,
-                message: 'Producto y stock agregados correctamente' ,
+                message: 'Producto y stock agregados correctamente',
                 error: false,
             }
         } catch (error) {
@@ -192,5 +195,23 @@ export class ProductoService {
         }
     }
 
+    async delete(id: number): Promise<ApiResponse> {
+        try {
+            const result = await this.productoRepository.update({ id }, { status: Status.E });
+            return {
+                data: result,
+                message: 'El producto se eliminó correctamente (estado cambiado a "E")',
+                error: false,
+            };
+        } catch (error) {
+            console.error('Error al eliminar producto:', error);
+            return {
+                data: null,
+                message: 'Error al eliminar producto',
+                error: true,
+            };
+        }
+    }
 
 }
+
